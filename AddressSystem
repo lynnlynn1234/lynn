@@ -1,0 +1,281 @@
+#include <iostream>
+#include <string>
+#include <Windows.h>
+
+using namespace std;
+
+struct User 
+{
+    string name = "小红";
+    int phone = 0;
+    string email = "ee";
+    string address = "22";
+    string deliver = "hao";
+};
+
+User uArrays[3]{};
+int p_size = 0;
+
+void UI() 
+{
+    cout << "   ~~欢迎来到通讯录管理系统 ~~   " << endl;
+    cout << "" << endl;
+    cout << "         1.添加联系人           " << endl;
+    cout << "         2.查询联系人           " << endl;
+    cout << "         3.删除联系人           " << endl;
+    cout << "         4.修改联系人           " << endl;
+    cout << "         5.查看分组             " << endl;
+    cout << "         6.输出全部联系人       " << endl;
+    cout << "         0.退出系统             " << endl;
+    cout << "********************************" << endl;
+    cout << "         ~~请选择~~             " << endl;
+    cout << "" << endl;
+}
+
+void AddPeople()
+{
+    if (p_size >= 3) {
+        cout << "系统已满，无法添加" << endl;
+        return;
+    }
+
+    User uInstance;
+    cout << "请输入姓名: ";
+    cin >> uInstance.name;
+    cout << "请输入手机号: ";
+    cin >> uInstance.phone;
+    cout << "请输入邮箱: ";
+    cin >> uInstance.email;
+    cout << "请输入地址: ";
+    cin >> uInstance.address;
+    cout << "请输入分组: ";
+    cin >> uInstance.deliver;
+
+    uArrays[p_size] = uInstance;
+    p_size++;
+
+    cout << "添加成功！继续添加吗？ Y/N" << endl;
+    char oper = ' ';
+    cin >> oper;
+    if (oper == 'Y' || oper == 'y') {
+        AddPeople();
+    }
+}
+
+void SeaPeople()
+{
+    if (p_size == 0) {
+        cout << "数据库中没人" << endl;
+        return;
+    }
+
+    string sea_name;
+    cout << "请输入要查询的联系人名字: ";
+    cin >> sea_name;
+
+    bool found = false;
+    for (int i = 0; i < p_size; i++) {
+        if (uArrays[i].name == sea_name) {
+            cout << "姓名: " << uArrays[i].name << ", 手机号: " << uArrays[i].phone << ", 邮箱: " << uArrays[i].email << ", 地址: " << uArrays[i].address << ", 分组: " << uArrays[i].deliver << endl;
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        cout << "未找到该联系人" << endl;
+    }
+}
+
+void  ExitSystem()
+{
+	
+	for (int i = 0; i < 4; i++)
+	{
+		Sleep(300);
+		cout << ">";
+	}
+	cout << endl;
+	exit(0);
+}
+
+void  DelPeople()
+{
+	cout << "需要删除的人员姓名" << endl;
+	string del_name = "";
+	int del_index = -1;
+	cin >> del_name;
+	for (int i = 0; i < p_size; i++)
+	{
+		if (uArrays[i].name == del_name)
+		{
+			del_index = i;
+
+		}
+	}
+
+	if (del_index != -1)
+	{
+		cout << "执行删除" << endl;
+		for (int i = del_index; i < p_size; i++)
+		{
+			uArrays[i] = uArrays[i + 1];
+
+		}
+	}
+	else
+	{
+		cout << "查无此人！" << endl;
+	}
+
+}
+
+
+void ChaPeople()
+{
+    string cha_name;
+    int cha_index = -1;
+    int cha;
+    string new_value;
+
+    cout << "请输入要修改的联系人名字: ";
+    cin >> cha_name;
+
+    for (int i = 0; i < p_size; i++)
+    {
+        if (uArrays[i].name == cha_name)
+        {
+            cha_index = i;
+            break;
+        }
+    }
+
+    if (cha_index != -1)
+    {
+        cout << "请输入要修改的信息：1.姓名 2.电话号码 3.email 4.地址 5.分组" << endl;
+        cin >> cha;
+
+        switch (cha)
+        {
+        case 1:
+            cout << "请输入新的姓名: ";
+            cin >> new_value;
+            uArrays[cha_index].name = new_value;
+            break;
+        case 2:
+            cout << "请输入新的手机号: ";
+            cin >> new_value;
+            uArrays[cha_index].phone = stoi(new_value);
+            break;
+        case 3:
+            cout << "请输入新的邮箱: ";
+            cin >> new_value;
+            uArrays[cha_index].email = new_value;
+            break;
+        case 4:
+            cout << "请输入地址: ";
+            cin >> new_value;
+            uArrays[cha_index].address = new_value;
+            break;
+        case 5:
+            cout << "请输入新的分组: ";
+            cin >> new_value;
+            uArrays[cha_index].deliver = new_value;
+            break;
+        default:
+            cout << "请选择正确的操作" << endl;
+            break;
+        }
+        cout << "修改成功！" << endl;
+    }
+    else
+    {
+        cout << "查无此人！" << endl;
+    }
+}
+
+void SelPeople()
+{
+	if (p_size == 0)
+	{
+		cout << "数据库中没人" << endl;
+	}
+
+	for (int i = 0; i < p_size; i++)
+	{
+		cout << "姓名:" << uArrays[i].name << "手机号:" << uArrays[i].phone << "  邮箱:" << uArrays[i].email << "  地址:" << uArrays[i].address << "  分组:" << uArrays[i].deliver << endl;
+
+	}
+}
+
+void  SelDeliver()
+{
+	cout << "请输入需要查看的分组" << endl;
+	string sel_deliver = "";
+	int sel_index = -1;
+	cin >> sel_deliver;
+	for (int i = 0; i < p_size; i++)
+	{
+		if (uArrays[i].deliver == sel_deliver)
+		{
+			sel_index = 1;
+
+		}
+	}
+
+	if (sel_index != -1)
+	{
+		for (int i = 0; i < p_size; i++)
+		{
+			if (uArrays[i].deliver == sel_deliver)
+                cout << "姓名:" << uArrays[i].name << "手机号:" << uArrays[i].phone << "  邮箱:" << uArrays[i].email << "  地址:" << uArrays[i].address << "  分组:" << uArrays[i].deliver << endl;
+
+		}
+	}
+	else
+	{
+		cout << "没有此分组！" << endl;
+	}
+
+}
+void ChooseNumber()
+{
+    int choose;
+    cin >> choose;
+
+    switch (choose) {
+    case 1:
+        AddPeople();
+        break;
+    case 2:
+        SeaPeople();
+        break;
+	case 3:
+		DelPeople();
+		break;
+	case 4:
+		ChaPeople();
+		break;
+	case 5:
+		SelDeliver();
+		break;
+	case 6:
+		SelPeople();
+		break;
+    case 0:
+		ExitSystem();
+        break;
+    default:
+        cout << "请选择正确的操作" << endl;
+        break;
+    }
+}
+
+int main() 
+{
+    for (int i = 0; i < 20; i++) {
+        UI();
+        ChooseNumber();
+    }
+    return 0;
+}
